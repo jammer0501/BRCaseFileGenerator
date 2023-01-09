@@ -1,0 +1,66 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '4.0.1'
+    id 'org.hidetake.ssh' version '2.10.1'
+}
+
+mainClassName = "Main"
+
+group 'com.killick.bots'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+remotes {
+    ec2 {
+        host = 'ec2-3-8-189-137.eu-west-2.compute.amazonaws.com'
+        user = 'ec2-user'
+        identity = file('/Users/james.killick/Downloads/PannaKeyPair.pem')
+    }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testImplementation 'org.mockito:mockito-inline:3.7.7'
+    testImplementation 'org.mockito:mockito-junit-jupiter:3.7.7'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    implementation 'net.dv8tion:JDA:4.2.0_168'
+    implementation 'org.apache.commons:commons-configuration2:2.7'
+}
+
+ssh.settings {
+    fileTransfer = 'scp'
+}
+/*
+task deploy {
+    ssh.run {
+        session(remotes.ec2) {
+            put from:"/Users/james.killick/dev/repos/PannaBot/build/libs//panna-bot-1.0-SNAPSHOT-all.jar", into:"/home/ec2-user/candidate.jar"
+        }
+    }
+}
+*/
+test {
+    useJUnitPlatform()
+    testLogging.showStandardStreams = true
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+jar {
+    manifest {
+        attributes 'Main-Class': 'Main'
+    }
+    /*
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+     */
+}
