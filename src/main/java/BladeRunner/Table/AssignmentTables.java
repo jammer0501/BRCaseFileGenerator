@@ -1,8 +1,8 @@
-package BladeRunner;
+package BladeRunner.Table;
 
 import java.util.Random;
 
-public final class Tables {
+public final class AssignmentTables {
 
     public enum Theme {
         ONE("Replicant Crimes & Punishment"),
