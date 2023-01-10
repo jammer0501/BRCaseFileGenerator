@@ -25,4 +25,19 @@ class TablesTest {
     void testRandomThemeThreeAssignment() {
         System.out.println(Tables.ThemeThreeAssignment.getRandomAssignment().getDescription());
     }
+
+    @Test
+    void testRandomThemeFourAssignment() {
+        System.out.println(Tables.ThemeFourAssignment.getRandomAssignment().getDescription());
+    }
+
+    @Test
+    void testRandomThemeFiveAssignment() {
+        System.out.println(Tables.ThemeFiveAssignment.getRandomAssignment().getDescription());
+    }
+
+    @Test
+    void testRandomThemeSixAssignment() {
+        System.out.println(Tables.ThemeSixAssignment.getRandomAssignment().getDescription());
+    }
 }

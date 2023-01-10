@@ -102,6 +102,80 @@ public final class Tables {
         }
     }
 
+    public enum ThemeFourAssignment{
+        ONE("The Replicant Underground bombs an Empathy Movement protest."),
+        TWO( "A gossip rag stumbles upon a seemingly real conspiracy to assassinate a pro-Replicant UN delegate."),
+        THREE("The UN Colonization Defense Program notifies the RDU that an AWOL N-9 is hiding out in the city."),
+        FOUR("Governor Kolvig requests a security detail at a public speaking event after an anonymous " +
+                "death threat."),
+        FIVE("LAPD Internal Affairs is investigating another Blade Runner for excessive use of force and abuse " +
+                "of power."),
+        SIX("An anti-Replicant populist politician is murdered. All evidence points towards the Replicant " +
+                "Underground. But the clues seem a little too convenient.");
+
+        public final String themeFourAssignment;
+
+        private ThemeFourAssignment(String themeFourAssignment) {
+            this.themeFourAssignment = themeFourAssignment;
+        }
+
+        public String getDescription() {return themeFourAssignment;}
+
+        public static ThemeFourAssignment getRandomAssignment() {
+            ThemeFourAssignment[] assignments = values();
+            return assignments[(int)(Math.random() * assignments.length)];
+        }
+    }
+
+    public enum ThemeFiveAssignment{
+        ONE("UN Marshals order the RDU to apprehend and transport a major drug trafficker harbored by the Replicant " +
+                "Underground."),
+        TWO( "LAPD joint-investigation with the Robbery division when a major casino heist suggests that Replicants " +
+                "were involved."),
+        THREE("LAPD Homicide joint-investigation requesting special forensic assistance on a priority serial murder " +
+                "case."),
+        FOUR("The CBI has requested a Doxie present during criminal interrogations of a major investigation."),
+        FIVE("An earthquake results in Replicant Blade Runners being enlisted as emergency responders."),
+        SIX("Internal security at Wallace Corp investigates stolen lab samples and enlists the help of LAPD.");
+
+        public final String themeFiveAssignment;
+
+        private ThemeFiveAssignment(String themeFiveAssignment) {
+            this.themeFiveAssignment = themeFiveAssignment;
+        }
+
+        public String getDescription() {return themeFiveAssignment;}
+
+        public static ThemeFiveAssignment getRandomAssignment() {
+            ThemeFiveAssignment[] assignments = values();
+            return assignments[(int)(Math.random() * assignments.length)];
+        }
+    }
+
+    public enum ThemeSixAssignment{
+        ONE("A digital companion is accused as an accessory to a series of bank robberies."),
+        TWO( "A real and priceless snow leopard is running free down Animoid Row after a smuggler’s trade-off goes " +
+                "sour."),
+        THREE("A tech company announces a new halo device with dangerous bio-hacking capabilities."),
+        FOUR("An animoid owl with supposedly implanted memories of a dead Wallace Corp bio-scientist " +
+                "goes missing."),
+        FIVE("Someone is killing synthetic animals on Animoid Row."),
+        SIX("A computer engineer disappears and seemingly turns up as a DiJi ghost.");
+
+        public final String themeSixAssignment;
+
+        private ThemeSixAssignment(String themeSixAssignment) {
+            this.themeSixAssignment = themeSixAssignment;
+        }
+
+        public String getDescription() {return themeSixAssignment;}
+
+        public static ThemeSixAssignment getRandomAssignment() {
+            ThemeSixAssignment[] assignments = values();
+            return assignments[(int)(Math.random() * assignments.length)];
+        }
+    }
+
     public static Theme generateTheme() {
         Theme[] themes = {Theme.ONE,
                 Theme.ONE,
