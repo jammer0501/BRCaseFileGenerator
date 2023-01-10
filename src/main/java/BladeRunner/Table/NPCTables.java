@@ -47,4 +47,18 @@ public class NPCTables {
                 firstNames[(int)(Math.random() * firstNames.length)],
                 lastNames[(int)(Math.random() * lastNames.length)]);
     }
+
+    public static NPC createStreetNPC() {
+        String[] occupations = {"Food Worker", "Maintenance Worker", "Scavenger", "Street Rat", "Cultist", "Store Owner"};
+        String[] quirks ={"Smelly", "Grubby clothes", "Fidgety", "Full of attitude",
+                "Whispers", "Eccentric"};
+        String[] firstNames = {"Vladislav", "Rhea", "Harley", "Dara", "Radhi", "Cass"};
+        String[] lastNames = {"Lang", "Mandell", "Beck", "Yang", "Molo", "Ibrahim"};
+
+        return new NPC(Type.STREET,
+                occupations[(int)(Math.random() * occupations.length)],
+                quirks[(int)(Math.random() * quirks.length)],
+                firstNames[(int)(Math.random() * firstNames.length)],
+                lastNames[(int)(Math.random() * lastNames.length)]);
+    }
 }

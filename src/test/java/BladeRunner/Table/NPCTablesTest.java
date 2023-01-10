@@ -20,4 +20,9 @@ class NPCTablesTest {
     void createEntertainmentNPC() {
         System.out.println(NPCTables.createEntertainmentNPC().toString());
     }
+
+    @Test
+    void createStreetNPC() {
+        System.out.println(NPCTables.createStreetNPC().toString());
+    }
 }
