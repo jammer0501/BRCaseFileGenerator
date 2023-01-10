@@ -10,4 +10,14 @@ class NPCTablesTest {
     void createCorporateNPC() {
         System.out.println(NPCTables.createCorporateNPC().toString());
     }
+
+    @Test
+    void createSecurityNPC() {
+        System.out.println(NPCTables.createSecurityNPC().toString());
+    }
+
+    @Test
+    void createEntertainmentNPC() {
+        System.out.println(NPCTables.createEntertainmentNPC().toString());
+    }
 }
