@@ -2,6 +2,7 @@ package BladeRunner.Table;
 
 import BladeRunner.Location;
 
+import java.awt.geom.Area;
 import java.util.Vector;
 
 public class LocationTables {
@@ -23,11 +24,6 @@ public class LocationTables {
         public String getDescription() {return sector;}
     }
 
-    public Location getSectorOneLocation() {
-        String[] areas = {};
-        return new Location();
-    }
-
     class AreaMap {
         public String area;
 
@@ -40,15 +36,34 @@ public class LocationTables {
     }
 
     class SectorOneLocationsTable {
-        private Vector<AreaMap> areaMaps;
+        private AreaMap[] areaMaps = new AreaMap[4];
 
         public SectorOneLocationsTable() {
-            areaMaps  = new Vector<AreaMap>();
-            areaMaps.add(new AreaMap("Nightclub Row", new String[]{"The Snake Pit", "Early Q", "Metropolis"}));
-            areaMaps.add(new AreaMap("Red Light District", new String[]{"Happy Jack's Casino", "Paradise Evolution", "Kumite"}));
-            areaMaps.add(new AreaMap("Beauty Parlors", new String[]{"Bright Eyes Beauty Salon", "Aphrodite", "Roxbox"}));
-            areaMaps.add(new AreaMap("Mid-City", new String[]{"Rag Row", "Magazine Mile", "A & B Sports Arena"}));
+            areaMaps[0] = new AreaMap("Nightclub Row", new String[]{"The Snake Pit", "Early Q", "Metropolis"});
+            areaMaps[1] = new AreaMap("Red Light District", new String[]{"Happy Jack's Casino", "Paradise Evolution", "Kumite"});
+            areaMaps[2] = new AreaMap("Beauty Parlors", new String[]{"Bright Eyes Beauty Salon", "Aphrodite", "Roxbox"});
+            areaMaps[3] = new AreaMap("Mid-City", new String[]{"Rag Row", "Magazine Mile", "A & B Sports Arena"});
         }
+
+        public Location createLocation() {
+
+            // set weight
+            int[] areas = {0,0,1,1,2,3};
+
+            // get area
+            int area = areas[(int)(Math.random() * areas.length)];
+            String areaString = areaMaps[area].area;
+
+            // get location
+            String[] locations = areaMaps[area].locations;
+            String location = locations[(int)(Math.random() * locations.length)];
+
+            return new Location(Sector.ONE, areaString, location);
+        }
+    }
+
+    public Location getSectorOneLocation() {
+        return new SectorOneLocationsTable().createLocation();
     }
 
     class SectorTwoLocationsTable {
