@@ -190,10 +190,4 @@ public final class AssignmentTables {
 
         return themes[(int)(Math.random() * 10)];
     }
-/*
-    public static generateThemeOneAssignment() {
-
-    }
-
- */
 }

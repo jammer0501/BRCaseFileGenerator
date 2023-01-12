@@ -61,4 +61,56 @@ public class NPCTables {
                 firstNames[(int)(Math.random() * firstNames.length)],
                 lastNames[(int)(Math.random() * lastNames.length)]);
     }
+
+    public static NPC createCrimeNPC() {
+        String[] occupations = {"Gang Member", "Hitman", "Hustler", "Burglar", "Drug Dealer", "Syndicate Member"};
+        String[] quirks ={"Ruthless", "Limps", "Extravagant haircut", "Plain",  "Suspicious", "Tattooed"};
+        String[] firstNames = {"Aurora", "Niko", "Rue", "Luca", "Jean", "Haru"};
+        String[] lastNames = {"Zhao", "Mercer", "Hoskins", "De Vries", "Wozniak", "Giordano"};
+
+        return new NPC(Type.CRIME,
+                occupations[(int)(Math.random() * occupations.length)],
+                quirks[(int)(Math.random() * quirks.length)],
+                firstNames[(int)(Math.random() * firstNames.length)],
+                lastNames[(int)(Math.random() * lastNames.length)]);
+    }
+
+    public static NPC createScienceNPC() {
+        String[] occupations = {"Student", "Scholar", "Researcher", "Scientist", "Analyst", "Biochemist"};
+        String[] quirks ={"Tired", "Touchy", "Intense", "Bald",  "Booming voice", "Wiry"};
+        String[] firstNames = {"Saidah", "Constance", "Reinhard", "Ivana", "Bwana", "Eve"};
+        String[] lastNames = {"Linton", "Sawadogo", "Meier", "Lec", "Siddiqi", "Ricci"};
+
+        return new NPC(Type.SCIENCE,
+                occupations[(int)(Math.random() * occupations.length)],
+                quirks[(int)(Math.random() * quirks.length)],
+                firstNames[(int)(Math.random() * firstNames.length)],
+                lastNames[(int)(Math.random() * lastNames.length)]);
+    }
+
+    public static NPC createTechNPC() {
+        String[] occupations = {"Technician", "Bioengineer", "Mechanic", "Engineer", "Programmer", "Quality Controller"};
+        String[] quirks ={"Corpulent", "Mumbling", "Impatient", "Bejeweled",  "Dry wit", "Arrogant"};
+        String[] firstNames = {"Bill", "Kat", "Amar", "Alejandro", "Eitan", "Mei"};
+        String[] lastNames = {"Banks", "Atwood", "Mirai", "Morales", "Chakrabarti", "Teng"};
+
+        return new NPC(Type.TECH,
+                occupations[(int)(Math.random() * occupations.length)],
+                quirks[(int)(Math.random() * quirks.length)],
+                firstNames[(int)(Math.random() * firstNames.length)],
+                lastNames[(int)(Math.random() * lastNames.length)]);
+    }
+
+    public static NPC createOtherNPC() {
+        String[] occupations = {"Clerk", "Journalist", "TV Host", "Cityspeaker", "Kid", "Politician"};
+        String[] quirks ={"Overly eager", "Brusque", "Elegant", "Old",  "Fashionable", "Argumentative"};
+        String[] firstNames = {"Feng", "Shira", "Sanjay", "Dmitry", "Libby", "Nombeko"};
+        String[] lastNames = {"Wyman", "da Silva", "Kamarr", "Kebede", "Esposito", "Koslovski"};
+
+        return new NPC(Type.OTHER,
+                occupations[(int)(Math.random() * occupations.length)],
+                quirks[(int)(Math.random() * quirks.length)],
+                firstNames[(int)(Math.random() * firstNames.length)],
+                lastNames[(int)(Math.random() * lastNames.length)]);
+    }
 }

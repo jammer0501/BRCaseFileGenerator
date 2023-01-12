@@ -25,4 +25,24 @@ class NPCTablesTest {
     void createStreetNPC() {
         System.out.println(NPCTables.createStreetNPC().toString());
     }
+
+    @Test
+    void createCrimeNPC() {
+        System.out.println(NPCTables.createCrimeNPC().toString());
+    }
+
+    @Test
+    void createScienceNPC() {
+        System.out.println(NPCTables.createScienceNPC().toString());
+    }
+
+    @Test
+    void createTechNPC() {
+        System.out.println(NPCTables.createTechNPC().toString());
+    }
+
+    @Test
+    void createOtherNPC() {
+        System.out.println(NPCTables.createOtherNPC().toString());
+    }
 }

@@ -1,4 +1,4 @@
-package BladeRunner;
+package BladeRunner.Table;
 
 import BladeRunner.Table.AssignmentTables;
 import org.junit.jupiter.api.Test;
