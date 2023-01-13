@@ -8,7 +8,16 @@ class LocationTablesTest {
 
     @Test
     void getSectorOneLocation() {
-        LocationTables locationTables = new LocationTables();
-        System.out.println(locationTables.getSectorOneLocation().toString());
+        System.out.println(LocationTables.SectorOneLocationsTable.createLocation().toString());
+    }
+
+    @Test
+    void getSectorTwoLocation() {
+        System.out.println(LocationTables.SectorTwoLocationsTable.createLocation().toString());
+    }
+
+    @Test
+    void getSectorFourLocation() {
+        System.out.println(LocationTables.SectorFourLocationsTable.createLocation().toString());
     }
 }

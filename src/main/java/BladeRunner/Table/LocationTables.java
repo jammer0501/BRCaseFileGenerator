@@ -1,8 +1,6 @@
 package BladeRunner.Table;
 
 import BladeRunner.Location;
-
-import java.awt.geom.Area;
 import java.util.Vector;
 
 public class LocationTables {
@@ -24,7 +22,7 @@ public class LocationTables {
         public String getDescription() {return sector;}
     }
 
-    class AreaMap {
+    static class AreaMap {
         public String area;
 
         public AreaMap(String area, String[] locations) {
@@ -35,24 +33,24 @@ public class LocationTables {
         public String[] locations;
     }
 
-    class SectorOneLocationsTable {
-        private AreaMap[] areaMaps = new AreaMap[4];
+    static class SectorOneLocationsTable {
+        private static AreaMap[] areaMaps = new AreaMap[4];
 
-        public SectorOneLocationsTable() {
+        static  {
             areaMaps[0] = new AreaMap("Nightclub Row", new String[]{"The Snake Pit", "Early Q", "Metropolis"});
             areaMaps[1] = new AreaMap("Red Light District", new String[]{"Happy Jack's Casino", "Paradise Evolution", "Kumite"});
             areaMaps[2] = new AreaMap("Beauty Parlors", new String[]{"Bright Eyes Beauty Salon", "Aphrodite", "Roxbox"});
             areaMaps[3] = new AreaMap("Mid-City", new String[]{"Rag Row", "Magazine Mile", "A & B Sports Arena"});
         }
 
-        public Location createLocation() {
+        public static Location createLocation() {
 
             // set weight
             int[] areas = {0,0,1,1,2,3};
 
             // get area
             int area = areas[(int)(Math.random() * areas.length)];
-            String areaString = areaMaps[area].area;
+            String areaString = areaMaps[areas[(int)(Math.random() * areas.length)]].area;
 
             // get location
             String[] locations = areaMaps[area].locations;
@@ -62,41 +60,74 @@ public class LocationTables {
         }
     }
 
-    public Location getSectorOneLocation() {
-        return new SectorOneLocationsTable().createLocation();
-    }
+    static class SectorTwoLocationsTable {
+        private static AreaMap[] areaMaps = new AreaMap[3];
 
-    class SectorTwoLocationsTable {
-        private Vector<AreaMap> areaMaps;
+        static {
 
-        public SectorTwoLocationsTable() {
-            areaMaps  = new Vector<AreaMap>();
-            areaMaps.add(new AreaMap("Hysteria Hall",
-                    new String[]{"Arcade", "Multiplex", "Crazy Legs Larry Used Autos"}));
-            areaMaps.add(new AreaMap("University of Los Angeles",
-                    new String[]{"University Library", "Dean's Office", "Student Dorms"}));
-            areaMaps.add(new AreaMap("University of Los Angeles Medical Center",
-                    new String[]{"Medical Research Lab", "Coma Ward", "Hospital Basement"}));
+            areaMaps[0] = new AreaMap("Hysteria Hall",
+                    new String[]{"Arcade", "Multiplex", "Crazy Legs Larry Used Autos"});
+            areaMaps[1] = new AreaMap("University of Los Angeles",
+                    new String[]{"University Library", "Dean's Office", "Student Dorms"});
+            areaMaps[2] = new AreaMap("University of Los Angeles Medical Center",
+                    new String[]{"Medical Research Lab", "Coma Ward", "Hospital Basement"});
+        }
+
+        public static Location createLocation() {
+
+            // get area
+            int randomAreaIdx = (int)(Math.random() * 3);
+            String areaString = areaMaps[randomAreaIdx].area;
+
+            // get location
+            String[] locations = areaMaps[randomAreaIdx].locations;
+            String location = locations[(int)(Math.random() * locations.length)];
+
+            return new Location(Sector.TWO, areaString, location);
         }
     }
 
-    class SectorFourLocationsTable {
-        private Vector<AreaMap> areaMaps;
+    static class SectorFourLocationsTable {
+        private static AreaMap[] areaMaps = new AreaMap[5];
 
-        public SectorFourLocationsTable() {
-            areaMaps  = new Vector<AreaMap>();
-            areaMaps.add(new AreaMap("Wallace HQ",
-                    new String[]{"Reception Area", "Wallace Records Library", "Memory Vaults", "Executive Suite"}));
-            areaMaps.add(new AreaMap("China-town",
-                    new String[]{"Ona Bar", "Shanghai Export & Import", "Hutong Alley"}));
-            areaMaps.add(new AreaMap("DNA Row",
-                    new String[]{"MirrorWare Industries", "Atinko Biowares", "Nekko Corporation"}));
-            areaMaps.add(new AreaMap("Hawker's Circle",
+        static {
+            areaMaps[0] = new AreaMap("Wallace HQ",
+                    new String[]{"Reception Area", "Wallace Records Library", "Memory Vaults", "Executive Suite"});
+            areaMaps[1] = new AreaMap("China-town",
+                    new String[]{"Ona Bar", "Shanghai Export & Import", "Hutong Alley"});
+            areaMaps[2] = new AreaMap("DNA Row",
+                    new String[]{"MirrorWare Industries", "Atinko Biowares", "Nekko Corporation"});
+            areaMaps[3] = new AreaMap("Hawker's Circle",
                     new String[]{"Kingston Kitchen", "Runner Surplus", "Piss Alley", "Howey Lee's", "Karma Bar",
-                            "Kabukicho Arcade"}));
-            areaMaps.add(new AreaMap("Animoid Row",
+                            "Kabukicho Arcade"});
+            areaMaps[4] = new AreaMap("Animoid Row",
                     new String[]{"Van Ness Pet Hospital", "The Fish Ladies", "Runciters Zoological",
-                            "The Dragonfly", "Prawn Shop & Aquatic Emporium","Abdul Ben Hassan's Reptiles"}));
+                            "The Dragonfly", "Prawn Shop & Aquatic Emporium","Abdul Ben Hassan's Reptiles"});
+        }
+
+        public static Location createLocation() {
+
+            final int WALLACE_HQ_IDX = 0;
+
+            // set weight
+            int[] areas = {0,1,2,3,4,4};
+
+            // get area
+            int areaIdx = areas[(int)(Math.random() * areas.length)];
+            String areaString = areaMaps[areaIdx].area;
+
+            // get location
+            String[] locations = areaMaps[areaIdx].locations;
+            String location;
+            if (areaIdx == WALLACE_HQ_IDX) {
+                // set weight
+                int[] locationIndices = {0,0,1,2,3,3};
+                location = locations[locationIndices[(int) (Math.random() * locationIndices.length)]];
+            } else {
+                location = locations[(int) (Math.random() * locations.length)];
+            }
+
+            return new Location(Sector.FOUR, areaString, location);
         }
     }
 
