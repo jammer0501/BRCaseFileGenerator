@@ -131,22 +131,37 @@ public class LocationTables {
         }
     }
 
-    class SectorFiveLocationsTable {
-        private Vector<AreaMap> areaMaps;
+    static class SectorFiveLocationsTable {
+        private static AreaMap[] areaMaps = new AreaMap[5];
 
-        public SectorFiveLocationsTable() {
-            areaMaps  = new Vector<AreaMap>();
-            areaMaps.add(new AreaMap("LAPD HQ",
-                    new String[]{"Rep Detect Unit", "Armory", "Crime Lab", "Mainframe","Morgue","Training Grounds"}));
-            areaMaps.add(new AreaMap("City Hall",
+        static {
+            areaMaps[0] = new AreaMap("LAPD HQ",
+                    new String[]{"Rep Detect Unit", "Armory", "Crime Lab", "Mainframe","Morgue","Training Grounds"});
+            areaMaps[1] = new AreaMap("City Hall",
                     new String[]{"City Hall Grand Stairs", "LA Courthouse", "Press Area", "Independent Sentinel",
-                            "Mayor's Office", "District Attorney's Office"}));
-            areaMaps.add(new AreaMap("Little Tokyo Shopping District",
+                            "Mayor's Office", "District Attorney's Office"});
+            areaMaps[2] = new AreaMap("Little Tokyo Shopping District",
                     new String[]{"White Dragon Noodle Bar", "Burger Burger Burger", "Shinjuku Alley", "Vending Mall",
-                            "Edo Megastore"}));
-            areaMaps.add(new AreaMap("Bar District", new String[]{"Naplopo", "Bibi's Bar", "Level 44"}));
-            areaMaps.add(new AreaMap("LAPD Housing", new String[]{"Burt Jackson Block", "Venderton Gardens",
-                    "Black'n'Blue Bar"}));
+                            "Edo Megastore"});
+            areaMaps[3] = new AreaMap("Bar District", new String[]{"Naplopo", "Bibi's Bar", "Level 44"});
+            areaMaps[4] = new AreaMap("LAPD Housing", new String[]{"Burt Jackson Block", "Venderton Gardens",
+                    "Black'n'Blue Bar"});
+        }
+
+        public static Location createLocation() {
+
+            // set weight
+            int[] areas = {0,1,2,2,3,4};
+
+            // get area
+            int areaIdx = areas[(int)(Math.random() * areas.length)];
+            String areaString = areaMaps[areaIdx].area;
+
+            // get location
+            String[] locations = areaMaps[areaIdx].locations;
+            String location = locations[(int) (Math.random() * locations.length)];
+
+            return new Location(Sector.FIVE, areaString, location);
         }
     }
 

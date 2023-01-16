@@ -20,4 +20,9 @@ class LocationTablesTest {
     void getSectorFourLocation() {
         System.out.println(LocationTables.SectorFourLocationsTable.createLocation().toString());
     }
+
+    @Test
+    void getSectorFiveLocation() {
+        System.out.println(LocationTables.SectorFiveLocationsTable.createLocation().toString());
+    }
 }
