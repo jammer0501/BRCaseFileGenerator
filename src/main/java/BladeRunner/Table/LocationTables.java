@@ -165,54 +165,108 @@ public class LocationTables {
         }
     }
 
-    class SectorNineLocationsTable {
-        private Vector<AreaMap> areaMaps;
+     static class SectorNineLocationsTable {
+        private static AreaMap[] areaMaps = new AreaMap[5];
 
-        public SectorNineLocationsTable() {
-            areaMaps  = new Vector<AreaMap>();
-            areaMaps.add(new AreaMap("Fashion District",
-                    new String[]{"Razdora Eatery", "Markova Ballroom", "Ogilvy's Auction"}));
-            areaMaps.add(new AreaMap("Financial District",
-                    new String[]{"LA Stock Exchange", "Walton Gardens", "Shaw Financial"}));
-            areaMaps.add(new AreaMap("Grand Central Market",
-                    new String[]{"Wakasani's Seafood", "Mumbai Spice Co", "Walter & Knecht Antique Books"}));
-            areaMaps.add(new AreaMap("LA Central Library",
-                    new String[]{"Grand Lobby", "Newspaper Archive", "Special Collection Vault"}));
-            areaMaps.add(new AreaMap("Retirement Row",
-                    new String[]{"LA Viaduct", "Abandoned Subway Station", "Crashed Spinner"}));
+        static {
+            areaMaps[0] = new AreaMap("Fashion District",
+                    new String[]{"Razdora Eatery", "Markova Ballroom", "Ogilvy's Auction"});
+            areaMaps[1] = new AreaMap("Financial District",
+                    new String[]{"LA Stock Exchange", "Walton Gardens", "Shaw Financial"});
+            areaMaps[2] = new AreaMap("Grand Central Market",
+                    new String[]{"Wakasani's Seafood", "Mumbai Spice Co", "Walter & Knecht Antique Books"});
+            areaMaps[3] = new AreaMap("LA Central Library",
+                    new String[]{"Grand Lobby", "Newspaper Archive", "Special Collection Vault"});
+            areaMaps[4] = new AreaMap("Retirement Row",
+                    new String[]{"LA Viaduct", "Abandoned Subway Station", "Crashed Spinner"});
         }
+
+         public static Location createLocation() {
+
+             // set weight
+             int[] areas = {0,1,2,2,3,4};
+
+             // get area
+             int areaIdx = areas[(int)(Math.random() * areas.length)];
+             String areaString = areaMaps[areaIdx].area;
+
+             // get location
+             String[] locations = areaMaps[areaIdx].locations;
+             String location = locations[(int) (Math.random() * locations.length)];
+
+             return new Location(Sector.NINE, areaString, location);
+         }
     }
 
-    class SectorTwelveLocationsTable {
-        private Vector<AreaMap> areaMaps;
+    static class SectorTwelveLocationsTable {
+        private static AreaMap[] areaMaps = new AreaMap[3];
 
-        public SectorTwelveLocationsTable() {
-            areaMaps  = new Vector<AreaMap>();
-            areaMaps.add(new AreaMap("LAX",
+        static {
+            areaMaps[0] = new AreaMap("LAX",
                     new String[]{"Off-World Spaceport Terminal", "On-World Domestic Terminal", "Control Tower",
-                            "Customs Office", "Hotel Madison"}));
-            areaMaps.add(new AreaMap("Warehouse District",
-                    new String[]{"Logistics Hub D", "Maeve's Bar", "Container Crane 141"}));
-            areaMaps.add(new AreaMap("Sea Wall Docks",
-                    new String[]{"LA Queen, Smuggler Ship", "Sea Wall Watch Station", "Wreck of Empress Sarah"}));
+                            "Customs Office", "Hotel Madison"});
+            areaMaps[1] = new AreaMap("Warehouse District",
+                    new String[]{"Logistics Hub D", "Maeve's Bar", "Container Crane 141"});
+            areaMaps[2] = new AreaMap("Sea Wall Docks",
+                    new String[]{"LA Queen, Smuggler Ship", "Sea Wall Watch Station", "Wreck of Empress Sarah"});
+        }
+
+        public static Location createLocation() {
+
+            final int LAX_IDX = 0;
+
+            // set weight
+            int[] areas = {0,0,0,1,1,2};
+
+            // get area
+            int areaIdx = areas[(int)(Math.random() * areas.length)];
+            String areaString = areaMaps[areaIdx].area;
+
+            /// get location
+            String[] locations = areaMaps[areaIdx].locations;
+            String location;
+            if (areaIdx == LAX_IDX) {
+                // set weight
+                int[] locationIndices = {0,0,1,2,3,4};
+                location = locations[locationIndices[(int) (Math.random() * locationIndices.length)]];
+            } else {
+                location = locations[(int) (Math.random() * locations.length)];
+            }
+
+            return new Location(Sector.TWELVE, areaString, location);
         }
     }
 
-    class BeyondDowntownLocationsTable {
-        private Vector<AreaMap> areaMaps;
+    static class BeyondDowntownLocationsTable {
+        private static AreaMap[] areaMaps = new AreaMap[5];
 
-        public BeyondDowntownLocationsTable() {
-            areaMaps  = new Vector<AreaMap>();
-            areaMaps.add(new AreaMap("The Energy Empire",
-                    new String[]{"Protein Farm", "Power Plant", "Transport Hub"}));
-            areaMaps.add(new AreaMap("Los Angeles Hills",
-                    new String[]{"Refugee Camp", "Low Income Housing Project", "Abandoned Building Site"}));
-            areaMaps.add(new AreaMap("Santa Barbara",
-                    new String[]{"De Vries Mansion", "Jenkins Family Estate", "Abandoned Resort"}));
-            areaMaps.add(new AreaMap("San Diego Trash Mesa",
-                    new String[]{"Labour Campe", "Off-Grid R&D Lab", "Scavenge Yard"}));
-            areaMaps.add(new AreaMap("The Kipple",
-                    new String[]{"Crashed Transport", "Scavenger Camp", "Waste Processing Station"}));
+        static {
+            areaMaps[0] = new AreaMap("The Energy Empire",
+                    new String[]{"Protein Farm", "Power Plant", "Transport Hub"});
+            areaMaps[1] = new AreaMap("Los Angeles Hills",
+                    new String[]{"Refugee Camp", "Low Income Housing Project", "Abandoned Building Site"});
+            areaMaps[2] = new AreaMap("Santa Barbara",
+                    new String[]{"De Vries Mansion", "Jenkins Family Estate", "Abandoned Resort"});
+            areaMaps[3] = new AreaMap("San Diego Trash Mesa",
+                    new String[]{"Labour Camp", "Off-Grid R&D Lab", "Scavenge Yard"});
+            areaMaps[4] = new AreaMap("The Kipple",
+                    new String[]{"Crashed Transport", "Scavenger Camp", "Waste Processing Station"});
+        }
+
+        public static Location createLocation() {
+
+            // set weight
+            int[] areas = {0,1,2,3,4,4};
+
+            // get area
+            int areaIdx = areas[(int)(Math.random() * areas.length)];
+            String areaString = areaMaps[areaIdx].area;
+
+            // get location
+            String[] locations = areaMaps[areaIdx].locations;
+            String location = locations[(int) (Math.random() * locations.length)];
+
+            return new Location(Sector.BEYOND_DOWNTOWN, areaString, location);
         }
     }
 }
