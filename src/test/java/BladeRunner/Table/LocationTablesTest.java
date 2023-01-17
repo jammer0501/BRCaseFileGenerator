@@ -40,4 +40,9 @@ class LocationTablesTest {
     void getBeyondDowntownLocation() {
         System.out.println(LocationTables.BeyondDowntownLocationsTable.createLocation().toString());
     }
+
+    @Test
+    void getGenerateLocation() {
+        System.out.println(LocationTables.generateLocation().toString());
+    }
 }

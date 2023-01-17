@@ -20,8 +20,47 @@ public class LocationTables {
         }
 
         public String getDescription() {return sector;}
+
+        public static Sector getRandomSector() {
+            Sector[] sectors = values();
+            // set weight
+            int[] sectorIndices = {0,1,2,3,4,4,5,6};
+
+            // get sector
+            return sectors[sectorIndices[(int)(Math.random() * sectorIndices.length)]];
+        }
     }
 
+    public static Location generateLocation() {
+       Sector sector = LocationTables.Sector.getRandomSector();
+        Location location;
+       switch (sector) {
+           case ONE:
+               location = SectorOneLocationsTable.createLocation();
+               break;
+           case TWO:
+               location = SectorTwoLocationsTable.createLocation();
+               break;
+           case FOUR:
+               location = SectorFourLocationsTable.createLocation();
+               break;
+           case FIVE:
+               location = SectorFiveLocationsTable.createLocation();
+               break;
+           case NINE:
+               location = SectorNineLocationsTable.createLocation();
+               break;
+           case TWELVE:
+               location = SectorTwelveLocationsTable.createLocation();
+               break;
+           case BEYOND_DOWNTOWN:
+               location = BeyondDowntownLocationsTable.createLocation();
+               break;
+           default:
+               throw new IllegalStateException("Unexpected value: " + sector);
+       }
+       return location;
+    }
     static class AreaMap {
         public String area;
 
