@@ -1,9 +1,53 @@
 package BladeRunner.Table;
 
+import BladeRunner.Location;
 import BladeRunner.NPC;
 
 public class NPCTables {
-    public enum Type {CORPORATE, SECURITY, ENTERTAINMENT, STREET, CRIME, SCIENCE, TECH, OTHER;}
+    public enum Type {
+        CORPORATE, SECURITY, ENTERTAINMENT, STREET, CRIME, SCIENCE, TECH, OTHER;
+
+        public static NPCTables.Type getRandomNPCType() {
+            NPCTables.Type[] types = values();
+
+            // get sector
+            return types[(int)(Math.random() * types.length)];
+        }
+    }
+
+    public static NPC generateNPC() {
+        NPCTables.Type type = NPCTables.Type.getRandomNPCType();
+        NPC person;
+        switch (type) {
+            case CORPORATE:
+                person = NPCTables.createCorporateNPC();
+                break;
+            case SECURITY:
+                person = NPCTables.createSecurityNPC();
+                break;
+            case ENTERTAINMENT:
+                person = NPCTables.createEntertainmentNPC();
+                break;
+            case STREET:
+                person = NPCTables.createStreetNPC();
+                break;
+            case CRIME:
+                person = NPCTables.createCrimeNPC();
+                break;
+            case SCIENCE:
+                person = NPCTables.createScienceNPC();
+                break;
+            case TECH:
+                person = NPCTables.createTechNPC();
+                break;
+            case OTHER:
+                person = NPCTables.createOtherNPC();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + type);
+        }
+        return person;
+    }
 
     public static NPC createCorporateNPC() {
         String[] occupations = {"Corporate Agent", "Lab Worker", "Administrator", "Manager",

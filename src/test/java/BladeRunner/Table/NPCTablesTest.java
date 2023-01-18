@@ -45,4 +45,14 @@ class NPCTablesTest {
     void createOtherNPC() {
         System.out.println(NPCTables.createOtherNPC().toString());
     }
+
+    @Test
+    void getRandomNPCType() {
+        System.out.println(NPCTables.Type.getRandomNPCType().toString());
+    }
+
+    @Test
+    void generateNPC() {
+        System.out.println(NPCTables.generateNPC().toString());
+    }
 }
