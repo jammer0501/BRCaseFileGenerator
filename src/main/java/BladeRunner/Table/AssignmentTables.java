@@ -190,4 +190,31 @@ public final class AssignmentTables {
 
         return themes[(int)(Math.random() * 10)];
     }
+
+    public static String generateAssignment() {
+        String assignment;
+        switch (generateTheme()) {
+            case ONE:
+                assignment = ThemeOneAssignment.getRandomAssignment().getDescription();
+                break;
+            case TWO:
+                assignment = ThemeTwoAssignment.getRandomAssignment().getDescription();
+                break;
+            case THREE:
+                assignment = ThemeThreeAssignment.getRandomAssignment().getDescription();
+                break;
+            case FOUR:
+                assignment = ThemeFourAssignment.getRandomAssignment().getDescription();
+                break;
+            case FIVE:
+                assignment = ThemeFiveAssignment.getRandomAssignment().getDescription();
+                break;
+            case SIX:
+                assignment = ThemeSixAssignment.getRandomAssignment().getDescription();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + generateTheme());
+        }
+        return assignment;
+    }
 }

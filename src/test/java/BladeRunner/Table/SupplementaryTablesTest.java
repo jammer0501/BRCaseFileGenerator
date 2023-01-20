@@ -13,11 +13,15 @@ class SupplementaryTablesTest {
 
     @Test
     void createFinalConfrontation() {
-        System.out.println(SupplementaryTables.createFinalConfrontation());
+        for (int i=0; i<5; i++) {
+            System.out.println(SupplementaryTables.createFinalConfrontation());
+        }
     }
 
     @Test
     void createMoodPiece() {
-        System.out.println(SupplementaryTables.createMoodPiece().toString());
+        for (int i=0; i<5; i++) {
+            System.out.println(SupplementaryTables.createMoodPiece().toString());
+        }
     }
 }

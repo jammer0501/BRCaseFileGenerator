@@ -26,9 +26,42 @@ public class CluesTable {
             // set weight
             int[] indices = {0,0,1,2,3,4,5,6};
 
-            // get sector
+            // get clue
             return types[indices[(int)(Math.random() * indices.length)]];
         }
+    }
+
+    public static Clue generateClue() {
+        Clue clue;
+        Type clueType = Type.getRandomClueType();
+
+        switch(clueType) {
+            case WITNESS:
+                clue = createWitnessClue();
+                break;
+            case FORENSIC:
+                clue = createForensicsClue();
+                break;
+            case RECORDING:
+                clue = createRecordingClue();
+                break;
+            case DOCUMENTS:
+                clue = createDocumentsClue();
+                break;
+            case RUMOURS:
+                clue = createRumoursClue();
+                break;
+            case TIP:
+                clue = createTipClue();
+                break;
+            case ITEM:
+                clue = createItemClue();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + clueType);
+        }
+
+        return clue;
     }
 
     public static Clue createWitnessClue() {

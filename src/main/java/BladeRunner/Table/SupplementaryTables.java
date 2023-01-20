@@ -85,7 +85,7 @@ public class SupplementaryTables {
                 {"Smog","travel add to exotic locations","A street sweeper vehicle"},
                 {"Rays of light through heavy clouds","digital companion ad","Street kids looking for trouble"}};
 
-        String[] mood = moods[(int)Math.random() * moods.length];
+        String[] mood = moods[(int)(Math.random() * moods.length)];
 
         return new MoodPiece(mood[0], mood[1], mood[2]);
     }

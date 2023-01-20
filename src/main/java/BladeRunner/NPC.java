@@ -58,6 +58,6 @@ public class NPC {
     }
 
     public String toString() {
-        return firstName + " " + lastName + " is a " + occupation + " whose quirk is: " + quirk;
+        return type + ": " +firstName + " " + lastName + " is a " + occupation + " whose quirk is: " + quirk;
     }
 }

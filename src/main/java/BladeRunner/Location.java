@@ -28,6 +28,6 @@ public class Location {
     }
 
     public String toString() {
-        return location + ", " + area + ", " + sector.getDescription();
+        return location + ", " + area + ", Sector " + sector.toString() + ": " + sector.getDescription();
     }
 }

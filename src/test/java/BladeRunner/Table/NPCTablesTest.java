@@ -1,5 +1,6 @@
 package BladeRunner.Table;
 
+import BladeRunner.NPC;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,5 +55,13 @@ class NPCTablesTest {
     @Test
     void generateNPC() {
         System.out.println(NPCTables.generateNPC().toString());
+    }
+
+    @Test
+    void generateNPCs() {
+        NPC[] npcs = NPCTables.generateNPCs(5);
+        for (int i=0; i<5; i++) {
+            System.out.println(npcs[i].toString());
+        }
     }
 }

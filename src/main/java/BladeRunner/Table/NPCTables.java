@@ -15,6 +15,14 @@ public class NPCTables {
         }
     }
 
+    public static NPC[] generateNPCs(int numberOfNPCsToCreate) {
+        NPC[] npcs = new NPC[numberOfNPCsToCreate];
+        for (int i=0; i<numberOfNPCsToCreate; i++) {
+            npcs[i] = generateNPC();
+        }
+        return npcs;
+    }
+
     public static NPC generateNPC() {
         NPCTables.Type type = NPCTables.Type.getRandomNPCType();
         NPC person;

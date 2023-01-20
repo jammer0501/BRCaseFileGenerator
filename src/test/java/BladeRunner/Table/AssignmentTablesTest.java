@@ -39,4 +39,9 @@ class AssignmentTablesTest {
     void testRandomThemeSixAssignment() {
         System.out.println(AssignmentTables.ThemeSixAssignment.getRandomAssignment().getDescription());
     }
+
+    @Test
+    void generateAssignment() {
+        System.out.println(AssignmentTables.generateAssignment());
+    }
 }
