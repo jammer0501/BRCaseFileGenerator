@@ -1,5 +1,5 @@
 // BUMP CACHE_VERSION when shipping content or code changes.
-const CACHE_VERSION = 'v3';
+const CACHE_VERSION = 'v4';
 const SHELL_CACHE   = `br-case-files-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `br-case-files-runtime-${CACHE_VERSION}`;
 

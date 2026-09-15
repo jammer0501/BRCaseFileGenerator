@@ -2,7 +2,7 @@ import { generateAssignment } from './tables/assignments.js';
 import { generateNpcs, formatNpc } from './tables/npcs.js';
 import { generateLocation, formatLocation } from './tables/locations.js';
 import { generateClue, formatClue } from './tables/clues.js';
-import { createTwist, createMoodPiece, formatMoodPiece } from './tables/supplementary.js';
+import { createTwist, createFinalConfrontation, createMoodPiece, formatMoodPiece } from './tables/supplementary.js';
 
 // Java: ThreadLocalRandom.nextInt(1, 3 + 1) + 3 -> 1..3, then +3 -> 4..6.
 function randomNpcCount() {
@@ -17,9 +17,7 @@ export function generateCase() {
     clues: Array.from({ length: 5 }, () => generateClue()),
     moods: Array.from({ length: 3 }, () => createMoodPiece()),
     twist: createTwist(),
-    // BUG (ported from Generator.java): this should call createFinalConfrontation(),
-    // but the original calls createTwist() again. Fixed in Step 2.
-    finalConfrontation: createTwist(),
+    finalConfrontation: createFinalConfrontation(),
   };
 }
 
