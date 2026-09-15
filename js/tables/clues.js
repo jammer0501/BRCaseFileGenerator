@@ -1,18 +1,16 @@
-import { randomItem } from '../random.js';
+import { randomItem, pickWeighted } from '../random.js';
 import { generateNpc, formatNpc } from './npcs.js';
 
-export const CLUE_TYPES = {
-  WITNESS: 'Witness',
-  FORENSIC: 'Forensic Evidence',
-  RECORDING: 'Recording',
-  DOCUMENTS: 'Documents',
-  RUMOURS: 'Rumours',
-  TIP: 'Anonymous Tip',
-  ITEM: 'Item',
-};
-
-// Weighted pool of clue-type ids, ported from CluesTable.Type.getRandomClueType().
-const CLUE_TYPE_WEIGHTS = ['WITNESS', 'WITNESS', 'FORENSIC', 'RECORDING', 'DOCUMENTS', 'RUMOURS', 'TIP', 'ITEM'];
+// Weight is relative likelihood, not a percentage; omit it for weight 1.
+export const CLUE_TYPES = [
+  { id: 'WITNESS', description: 'Witness', weight: 2 },
+  { id: 'FORENSIC', description: 'Forensic Evidence' },
+  { id: 'RECORDING', description: 'Recording' },
+  { id: 'DOCUMENTS', description: 'Documents' },
+  { id: 'RUMOURS', description: 'Rumours' },
+  { id: 'TIP', description: 'Anonymous Tip' },
+  { id: 'ITEM', description: 'Item' },
+];
 
 const CLUE_ITEMS = {
   FORENSIC: ['Ballistics', 'Toxicology', 'DNA', 'Fingerprints', 'Autopsy', 'Blood'],
@@ -23,8 +21,12 @@ const CLUE_ITEMS = {
   ITEM: ['Gun', 'Clothing', 'Statuette', 'Jewelry', 'Vehicle', 'Data Disc / Memory C/ube'],
 };
 
+function clueTypeDescription(id) {
+  return CLUE_TYPES.find((type) => type.id === id).description;
+}
+
 export function generateClue() {
-  const type = randomItem(CLUE_TYPE_WEIGHTS);
+  const type = pickWeighted(CLUE_TYPES).id;
   if (type === 'WITNESS') {
     return { type, witness: generateNpc() };
   }
@@ -32,7 +34,7 @@ export function generateClue() {
 }
 
 export function formatClue(clue) {
-  const label = CLUE_TYPES[clue.type];
+  const label = clueTypeDescription(clue.type);
   if (clue.type === 'WITNESS') {
     return `${label}: ${formatNpc(clue.witness)}`;
   }

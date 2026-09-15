@@ -4,7 +4,8 @@ import { generateTheme, generateAssignment, THEMES } from '../js/tables/assignme
 
 test('generateTheme returns a known theme', () => {
   for (let i = 0; i < 30; i++) {
-    assert.ok(Object.keys(THEMES).includes(generateTheme()));
+    const theme = generateTheme();
+    assert.ok(THEMES.some((t) => t.id === theme), `unknown theme: ${theme}`);
   }
 });
 

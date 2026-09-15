@@ -1,17 +1,14 @@
-import { randomItem } from '../random.js';
+import { randomItem, pickWeighted } from '../random.js';
 
-export const THEMES = {
-  ONE: 'Replicant Crimes & Punishment',
-  TWO: 'Corporate Intrigues & Courtroom Dramas',
-  THREE: 'Organised and Underground Threats',
-  FOUR: 'Political Machinations & Internal Affairs',
-  FIVE: 'UN Assignments & Joint Investigations',
-  SIX: 'Monitored Entities & Technologies',
-};
-
-// Weighted pool of theme ids, ported from AssignmentTables.generateTheme()'s
-// hard-coded 10-slot array.
-const THEME_WEIGHTS = ['ONE', 'ONE', 'ONE', 'ONE', 'TWO', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX'];
+// Weight is relative likelihood, not a percentage; omit it for weight 1.
+export const THEMES = [
+  { id: 'ONE', description: 'Replicant Crimes & Punishment', weight: 4 },
+  { id: 'TWO', description: 'Corporate Intrigues & Courtroom Dramas', weight: 2 },
+  { id: 'THREE', description: 'Organised and Underground Threats' },
+  { id: 'FOUR', description: 'Political Machinations & Internal Affairs' },
+  { id: 'FIVE', description: 'UN Assignments & Joint Investigations' },
+  { id: 'SIX', description: 'Monitored Entities & Technologies' },
+];
 
 const ASSIGNMENTS_BY_THEME = {
   ONE: [
@@ -71,7 +68,7 @@ const ASSIGNMENTS_BY_THEME = {
 };
 
 export function generateTheme() {
-  return randomItem(THEME_WEIGHTS);
+  return pickWeighted(THEMES).id;
 }
 
 export function generateAssignment() {

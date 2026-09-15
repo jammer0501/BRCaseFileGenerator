@@ -5,7 +5,7 @@ import { generateLocation, formatLocation, SECTORS } from '../js/tables/location
 test('generateLocation returns a valid location in a known sector', () => {
   for (let i = 0; i < 100; i++) {
     const loc = generateLocation();
-    assert.ok(Object.keys(SECTORS).includes(loc.sector), `unknown sector: ${loc.sector}`);
+    assert.ok(SECTORS.some((sector) => sector.id === loc.sector), `unknown sector: ${loc.sector}`);
     assert.ok(loc.area.length > 0);
     assert.ok(loc.location.length > 0);
   }
