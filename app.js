@@ -1,0 +1,18 @@
+import { generateCase, formatCase } from './js/generator.js';
+
+const generateBtn = document.getElementById('generate-btn');
+const resultEl = document.getElementById('result');
+const outputEl = document.getElementById('case-output');
+
+generateBtn.addEventListener('click', () => {
+  outputEl.textContent = formatCase(generateCase());
+  resultEl.hidden = false;
+});
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then((reg) => console.log('[SW] registered', reg.scope))
+      .catch((err) => console.warn('[SW] registration failed', err));
+  });
+}

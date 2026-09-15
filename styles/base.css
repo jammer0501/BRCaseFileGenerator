@@ -1,0 +1,74 @@
+/* ─── Reset ─────────────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+[hidden] { display: none !important; }
+
+/* ─── Layout ─────────────────────────────────────────────────────────────── */
+
+body {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+
+  /* Colour and font vars are set by the theme stylesheet. */
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--font-size-base, 1rem);
+  line-height: 1.6;
+}
+
+.app {
+  width: 100%;
+  max-width: 480px;
+  padding: 1.5rem 1.25rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.app-title {
+  margin-bottom: 1rem;
+}
+
+.app-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ─── Roll button ────────────────────────────────────────────────────────── */
+
+.roll-btn {
+  width: 100%;
+  min-height: 56px;
+  cursor: pointer;
+  border: 2px solid var(--color-accent);
+  background: var(--color-roll-bg);
+  color: var(--color-roll-text);
+  font-family: var(--font-ui);
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-btn, 0);
+}
+
+/* ─── Result ─────────────────────────────────────────────────────────────── */
+
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.case-output {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--font-body);
+  font-size: var(--font-size-result, 0.95rem);
+  line-height: 1.75;
+}

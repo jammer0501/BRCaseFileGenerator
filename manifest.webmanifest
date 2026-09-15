@@ -1,0 +1,15 @@
+{
+  "name": "Blade Runner Case File Generator",
+  "short_name": "Case Files",
+  "display": "standalone",
+  "theme_color": "#0a0e14",
+  "background_color": "#0a0e14",
+  "start_url": "./",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

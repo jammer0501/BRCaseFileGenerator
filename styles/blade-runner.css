@@ -1,0 +1,104 @@
+/* ── Blade Runner — Neon Noir Terminal Theme ──────────────────────────────
+   Adapted from rpg-companion's blade-runner.css, trimmed to what this
+   single-theme, single-purpose app actually uses.                        */
+
+body.mode-blade-runner {
+  --color-bg:        #0a0e14;
+  --color-text:      #c8d4d8;
+  --color-accent:    #00e5ff;   /* cyan — button, focus, result frame */
+  --color-border:    #1e2d3a;
+  --color-label:     #4a6a7a;
+
+  --color-roll-bg:   #0a0e14;   /* dark/outlined, not filled */
+  --color-roll-text: #00e5ff;
+
+  --font-body:       'Space Mono', 'Courier New', monospace;
+  --font-ui:         'Space Mono', 'Courier New', monospace;
+  --font-size-base:  0.875rem;
+  --font-size-result: 0.875rem;
+
+  --radius-btn: 0;
+}
+
+body.mode-blade-runner {
+  background-color: var(--color-bg);
+}
+
+/* Scanlines: a repeating CSS gradient — no image, cheap on mobile GPU.
+   pointer-events: none so it doesn't block taps. */
+body.mode-blade-runner::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.09) 3px,
+    rgba(0, 0, 0, 0.09) 4px
+  );
+  z-index: 9999;
+}
+
+/* ── App title / header ──────────────────────────────────────────────── */
+
+body.mode-blade-runner .app-title {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #ff2e88;
+  text-align: center;
+  text-shadow: 0 0 14px rgba(255, 46, 136, 0.55);
+}
+
+body.mode-blade-runner .app-title-main {
+  display: block;
+  font-family: 'Orbitron', 'Space Mono', monospace;
+  font-size: 1.3rem;
+  font-weight: 900;
+}
+
+body.mode-blade-runner .app-title-sub {
+  display: block;
+  margin-top: 0.4rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+body.mode-blade-runner .app-header {
+  border-bottom: 1px solid rgba(0, 229, 255, 0.15);
+  padding-bottom: 1rem;
+}
+
+/* ── Roll button ──────────────────────────────────────────────────────── */
+
+body.mode-blade-runner .roll-btn {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  border-color: var(--color-accent);
+  transition: text-shadow 0.15s, box-shadow 0.15s, opacity 0.15s;
+}
+
+body.mode-blade-runner .roll-btn:hover {
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
+  box-shadow:  0 0 18px rgba(0, 229, 255, 0.12);
+}
+
+body.mode-blade-runner .roll-btn:active {
+  opacity: 0.75;
+}
+
+/* ── Result ───────────────────────────────────────────────────────────── */
+
+body.mode-blade-runner .result {
+  border-left: 2px solid rgba(0, 229, 255, 0.25);
+  padding-left: 1rem;
+}
+
+body.mode-blade-runner .case-output {
+  color: var(--color-text);
+  letter-spacing: 0.01em;
+}
