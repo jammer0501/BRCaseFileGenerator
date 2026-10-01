@@ -1,5 +1,5 @@
 // BUMP CACHE_VERSION when shipping content or code changes.
-const CACHE_VERSION = 'v5';
+const CACHE_VERSION = 'v6';
 const SHELL_CACHE   = `br-case-files-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `br-case-files-runtime-${CACHE_VERSION}`;
 
@@ -7,6 +7,7 @@ const SHELL_URLS = [
   'index.html',
   'app.js',
   'js/generator.js',
+  'js/relationships.js',
   'js/random.js',
   'js/tables/npcs.js',
   'js/tables/locations.js',

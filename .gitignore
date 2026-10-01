@@ -9,3 +9,6 @@ out/
 # OS
 .DS_Store
 Thumbs.db
+
+# Local-only tools (third-party sourcebook content — never commit/push)
+/local/

@@ -44,6 +44,12 @@ body {
 
 /* ─── Roll button ────────────────────────────────────────────────────────── */
 
+.roll-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
 .roll-btn {
   width: 100%;
   min-height: 56px;
