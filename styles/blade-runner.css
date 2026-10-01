@@ -12,6 +12,8 @@ body.mode-blade-runner {
   --color-roll-bg:   #0a0e14;   /* dark/outlined, not filled */
   --color-roll-text: #00e5ff;
 
+  --color-solution:  #ff2e88;   /* neon magenta — the reveal, set apart from the case */
+
   --font-body:       'Space Mono', 'Courier New', monospace;
   --font-ui:         'Space Mono', 'Courier New', monospace;
   --font-size-base:  0.875rem;
@@ -101,4 +103,43 @@ body.mode-blade-runner .result {
 body.mode-blade-runner .case-output {
   color: var(--color-text);
   letter-spacing: 0.01em;
+}
+
+/* ── Solution ─────────────────────────────────────────────────────────── */
+
+body.mode-blade-runner .solution-toggle {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  border-style: dashed;
+  transition: text-shadow 0.15s;
+}
+
+body.mode-blade-runner .solution-toggle:hover {
+  text-shadow: 0 0 10px rgba(255, 46, 136, 0.7);
+}
+
+body.mode-blade-runner .solution[open] .solution-toggle {
+  border-style: solid;
+}
+
+body.mode-blade-runner .solution-culprit {
+  text-shadow: 0 0 8px rgba(255, 46, 136, 0.4);
+}
+
+body.mode-blade-runner .reroll-btn {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  transition: text-shadow 0.15s;
+}
+
+body.mode-blade-runner .reroll-btn:hover {
+  text-shadow: 0 0 10px rgba(255, 46, 136, 0.7);
+}
+
+body.mode-blade-runner .reroll-btn:active {
+  opacity: 0.75;
 }

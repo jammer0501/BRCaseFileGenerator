@@ -30,11 +30,16 @@
 
       <div class="roll-section">
         <button class="roll-btn" id="generate-btn">Generate Case</button>
-        <button class="roll-btn" id="relationships-btn" hidden>Generate Relationships</button>
       </div>
 
-      <section class="result" id="result" hidden aria-live="polite" aria-atomic="true">
-        <pre class="case-output" id="case-output"></pre>
+      <section class="result" id="result" hidden>
+        <pre class="case-output" id="case-output" aria-live="polite" aria-atomic="true"></pre>
+
+        <details class="solution" id="solution">
+          <summary class="solution-toggle">Reveal Solution</summary>
+          <div class="solution-body" id="solution-body"></div>
+          <button class="reroll-btn" id="reroll-btn">Re-roll Solution</button>
+        </details>
       </section>
 
     </main>

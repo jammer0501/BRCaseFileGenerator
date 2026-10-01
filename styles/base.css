@@ -44,12 +44,6 @@ body {
 
 /* ─── Roll button ────────────────────────────────────────────────────────── */
 
-.roll-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
 .roll-btn {
   width: 100%;
   min-height: 56px;
@@ -77,4 +71,79 @@ body {
   font-family: var(--font-body);
   font-size: var(--font-size-result, 0.95rem);
   line-height: 1.75;
+}
+
+/* ─── Solution (collapsed spoiler under the case) ────────────────────────── */
+
+.solution-toggle {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-solution);
+  color: var(--color-solution);
+  font-family: var(--font-ui);
+  text-align: center;
+}
+
+.solution-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.solution-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-top: 1.25rem;
+  line-height: 1.6;
+}
+
+.solution-heading {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-label);
+}
+
+.solution-block p,
+.solution-locations dd {
+  margin: 0;
+}
+
+.solution-culprit {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--color-solution);
+}
+
+.solution-locations dt {
+  margin-top: 0.5rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.solution-clues {
+  margin: 0;
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.clue-link {
+  color: var(--color-label);
+  font-style: italic;
+}
+
+.reroll-btn {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 1.25rem;
+  cursor: pointer;
+  border: 1px solid var(--color-solution);
+  background: transparent;
+  color: var(--color-solution);
+  font-family: var(--font-ui);
+  border-radius: var(--radius-btn, 0);
 }

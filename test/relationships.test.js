@@ -57,6 +57,52 @@ test('witness clues never get foundAt.kind === "npc"', () => {
   }
 });
 
+const STAGES = ['CRIME_SCENE', 'CULPRIT_HAUNT', 'CONFRONTATION'];
+
+function roleOf(locationRoles, locationIndex) {
+  return locationRoles.find((r) => r.locationIndex === locationIndex).role;
+}
+
+test('a clue never points to the location it was found at', () => {
+  for (let i = 0; i < 200; i++) {
+    const c = generateCase();
+    const { clueLinks } = generateRelationships(c);
+    for (const { foundAt, pointsTo } of clueLinks) {
+      if (foundAt.kind === 'location' && pointsTo.kind === 'location') {
+        assert.notEqual(pointsTo.locationIndex, foundAt.locationIndex);
+      }
+    }
+  }
+});
+
+test('clues only point forward along the trail, never to the Crime Scene', () => {
+  for (let i = 0; i < 200; i++) {
+    const c = generateCase();
+    const { locationRoles, clueLinks } = generateRelationships(c);
+    for (const { foundAt, pointsTo } of clueLinks) {
+      if (pointsTo.kind !== 'location') continue;
+      const toStage = STAGES.indexOf(roleOf(locationRoles, pointsTo.locationIndex));
+      assert.ok(toStage > 0, 'points to the Crime Scene');
+      if (foundAt.kind === 'location') {
+        const fromStage = STAGES.indexOf(roleOf(locationRoles, foundAt.locationIndex));
+        assert.ok(toStage > fromStage, 'points backward or sideways');
+      }
+    }
+  }
+});
+
+test('every trail leads to the Haunt and Confrontation Site and implicates the culprit', () => {
+  for (let i = 0; i < 200; i++) {
+    const c = generateCase();
+    const { locationRoles, clueLinks } = generateRelationships(c);
+    const leadsTo = (role) => clueLinks.some((l) =>
+      l.pointsTo.kind === 'location' && roleOf(locationRoles, l.pointsTo.locationIndex) === role);
+    assert.ok(clueLinks.some((l) => l.pointsTo.kind === 'culprit'));
+    assert.ok(leadsTo('CULPRIT_HAUNT'));
+    assert.ok(leadsTo('CONFRONTATION'));
+  }
+});
+
 test('formatRelationships includes solution and clue trail headers', () => {
   const c = generateCase();
   const text = formatRelationships(c, generateRelationships(c));

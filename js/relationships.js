@@ -38,18 +38,69 @@ function generateLocationRoles(locationCount) {
   return LOCATION_ROLES.map((role, i) => ({ locationIndex: order[i], role }));
 }
 
-function generateFoundAt(clue, npcCount, locationCount) {
-  // Witness clues are already a "who" — foundAt must be where they were
-  // encountered, not a second NPC.
+function locationFor(locationRoles, role) {
+  return locationRoles.find((r) => r.role === role).locationIndex;
+}
+
+// Witness clues are already a "who" — foundAt must be where they were
+// encountered, not a second NPC. `allowedRoles` limits which locations
+// the clue can be found at.
+function generateFoundAt(clue, npcCount, locationRoles, allowedRoles = LOCATION_ROLES) {
   if (clue.type === 'WITNESS' || Math.random() < 0.5) {
-    return { kind: 'location', locationIndex: randomIndex(locationCount) };
+    const role = randomItem(allowedRoles);
+    return { kind: 'location', locationIndex: locationFor(locationRoles, role) };
   }
   return { kind: 'npc', npcIndex: randomIndex(npcCount) };
 }
 
-function generatePointsTo(locationCount) {
-  if (Math.random() < 0.5) return { kind: 'culprit' };
-  return { kind: 'location', locationIndex: randomIndex(locationCount) };
+// The trail only moves forward: Crime Scene → Culprit's Haunt →
+// Confrontation Site. A clue can point to a location later in the chain
+// than where it was found (never the Crime Scene itself, which the
+// investigators already know), or to the culprit. Clues found on an NPC
+// sit outside the chain and can point to any later location.
+function forwardTargets(foundAt, locationRoles) {
+  const fromStage = foundAt.kind === 'location'
+    ? LOCATION_ROLES.indexOf(locationRoles.find((r) => r.locationIndex === foundAt.locationIndex).role)
+    : 0;
+  return LOCATION_ROLES.slice(fromStage + 1);
+}
+
+// Most clues move the investigation along; only 1 in 3 (where a location
+// is still available) implicates the culprit directly.
+function generatePointsTo(foundAt, locationRoles) {
+  const targets = forwardTargets(foundAt, locationRoles);
+  if (targets.length === 0 || Math.random() < 1 / 3) return { kind: 'culprit' };
+  return { kind: 'location', locationIndex: locationFor(locationRoles, randomItem(targets)) };
+}
+
+// Every trail forms a full chain — something leads to the Culprit's Haunt,
+// something leads to the Confrontation Site, and something implicates the
+// culprit. A distinct clue is reserved for each; the rest are rolled freely.
+// Each reserved location clue is found earlier in the chain than its target.
+const RESERVED_LINKS = [
+  { pointsTo: 'CULPRIT_HAUNT', foundAtRoles: ['CRIME_SCENE'] },
+  { pointsTo: 'CONFRONTATION', foundAtRoles: ['CRIME_SCENE', 'CULPRIT_HAUNT'] },
+  { pointsTo: 'culprit', foundAtRoles: LOCATION_ROLES },
+];
+
+function generateClueLinks(c, locationRoles) {
+  const reservedFor = new Map(
+    shuffledIndices(c.clues.length).slice(0, RESERVED_LINKS.length)
+      .map((clueIndex, i) => [clueIndex, RESERVED_LINKS[i]])
+  );
+
+  return c.clues.map((clue, clueIndex) => {
+    const reserved = reservedFor.get(clueIndex);
+    if (!reserved) {
+      const foundAt = generateFoundAt(clue, c.npcs.length, locationRoles);
+      return { clueIndex, foundAt, pointsTo: generatePointsTo(foundAt, locationRoles) };
+    }
+    const foundAt = generateFoundAt(clue, c.npcs.length, locationRoles, reserved.foundAtRoles);
+    const pointsTo = reserved.pointsTo === 'culprit'
+      ? { kind: 'culprit' }
+      : { kind: 'location', locationIndex: locationFor(locationRoles, reserved.pointsTo) };
+    return { clueIndex, foundAt, pointsTo };
+  });
 }
 
 export function generateRelationships(c) {
@@ -59,12 +110,7 @@ export function generateRelationships(c) {
   };
 
   const locationRoles = generateLocationRoles(c.locations.length);
-
-  const clueLinks = c.clues.map((clue, clueIndex) => ({
-    clueIndex,
-    foundAt: generateFoundAt(clue, c.npcs.length, c.locations.length),
-    pointsTo: generatePointsTo(c.locations.length),
-  }));
+  const clueLinks = generateClueLinks(c, locationRoles);
 
   return { culprit, locationRoles, clueLinks };
 }
@@ -90,27 +136,45 @@ function formatPointsTo(pointsTo, locationRoles) {
   return `points to the ${locationRoleLabel(locationRoles, pointsTo.locationIndex)}`;
 }
 
-export function formatRelationships(c, relationships) {
+// Structured, display-ready text for each part of the solution — the page
+// renders this as HTML; formatRelationships flattens it to plain text.
+export function describeRelationships(c, relationships) {
   const { culprit, locationRoles, clueLinks } = relationships;
   const culpritNpc = c.npcs[culprit.npcIndex];
+
+  return {
+    culprit: {
+      name: `${culpritNpc.firstName} ${culpritNpc.lastName}`,
+      detail: `${culpritNpc.type}: ${culpritNpc.occupation}`,
+      motive: culprit.motive,
+    },
+    locations: LOCATION_ROLES.map((role) => ({
+      label: LOCATION_ROLE_LABELS[role],
+      text: formatLocation(c.locations[locationFor(locationRoles, role)]),
+    })),
+    clues: clueLinks.map((link) => {
+      const clue = c.clues[link.clueIndex];
+      return {
+        text: formatClue(clue),
+        foundAt: formatFoundAt(clue, link.foundAt, c, culprit.npcIndex, locationRoles),
+        pointsTo: formatPointsTo(link.pointsTo, locationRoles),
+      };
+    }),
+  };
+}
+
+export function formatRelationships(c, relationships) {
+  const { culprit, locations, clues } = describeRelationships(c, relationships);
   const lines = [];
 
   lines.push('CASE SOLUTION:');
-  lines.push(
-    `Culprit: ${culpritNpc.firstName} ${culpritNpc.lastName} (${culpritNpc.type}: ${culpritNpc.occupation}) — Motive: ${culprit.motive}`
-  );
-  for (const role of LOCATION_ROLES) {
-    const entry = locationRoles.find((r) => r.role === role);
-    lines.push(`${LOCATION_ROLE_LABELS[role]}: ${formatLocation(c.locations[entry.locationIndex])}`);
-  }
+  lines.push(`Culprit: ${culprit.name} (${culprit.detail}) — Motive: ${culprit.motive}`);
+  for (const { label, text } of locations) lines.push(`${label}: ${text}`);
 
   lines.push('');
   lines.push('CLUE TRAIL:');
-  for (const link of clueLinks) {
-    const clue = c.clues[link.clueIndex];
-    const foundAtText = formatFoundAt(clue, link.foundAt, c, culprit.npcIndex, locationRoles);
-    const pointsToText = formatPointsTo(link.pointsTo, locationRoles);
-    lines.push(`${formatClue(clue)} — ${foundAtText} → ${pointsToText}`);
+  for (const { text, foundAt, pointsTo } of clues) {
+    lines.push(`${text} — ${foundAt} → ${pointsTo}`);
   }
 
   return lines.join('\n');
