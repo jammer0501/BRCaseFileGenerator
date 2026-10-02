@@ -105,6 +105,30 @@ body.mode-blade-runner .case-output {
   letter-spacing: 0.01em;
 }
 
+body.mode-blade-runner .case-heading {
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.45);
+}
+
+body.mode-blade-runner .case-assignment {
+  color: #e8f4f7;
+}
+
+body.mode-blade-runner .case-item {
+  background: rgba(0, 229, 255, 0.03);
+}
+
+body.mode-blade-runner .case-name {
+  color: #e8f4f7;
+}
+
+body.mode-blade-runner .case-meta {
+  color: #7f9aa6;   /* --color-label is too faint at this small size */
+}
+
+body.mode-blade-runner .case-mood {
+  font-style: italic;
+}
+
 /* ── Solution ─────────────────────────────────────────────────────────── */
 
 body.mode-blade-runner .solution-toggle {

@@ -1,4 +1,4 @@
-import { generateCase, formatCase } from './js/generator.js';
+import { generateCase, describeCase } from './js/generator.js';
 import { generateRelationships, describeRelationships } from './js/relationships.js';
 
 const generateBtn = document.getElementById('generate-btn');
@@ -15,6 +15,50 @@ function el(tag, className, text) {
   if (className) node.className = className;
   if (text !== undefined) node.textContent = text;
   return node;
+}
+
+function caseSection(title, ...content) {
+  const section = el('section', 'case-section');
+  section.append(el('h2', 'case-heading', title), ...content);
+  return section;
+}
+
+function renderCase(c) {
+  const { assignment, npcs, locations, clues, moods, twist, finalConfrontation } = describeCase(c);
+
+  const npcList = el('ul', 'case-list');
+  for (const { name, role, quirk } of npcs) {
+    const item = el('li', 'case-item');
+    item.append(el('p', 'case-name', name), el('p', 'case-meta', role), el('p', 'case-note', `Quirk: ${quirk}`));
+    npcList.append(item);
+  }
+
+  const locationList = el('ul', 'case-list');
+  for (const { name, detail } of locations) {
+    const item = el('li', 'case-item');
+    item.append(el('p', 'case-name', name), el('p', 'case-meta', detail));
+    locationList.append(item);
+  }
+
+  const clueList = el('ul', 'case-list');
+  for (const { label, text } of clues) {
+    const item = el('li', 'case-item case-clue');
+    item.append(el('span', 'case-tag', label), el('p', null, text));
+    clueList.append(item);
+  }
+
+  const moodList = el('ul', 'case-list');
+  for (const mood of moods) moodList.append(el('li', 'case-item case-mood', mood));
+
+  outputEl.replaceChildren(
+    caseSection('Assignment', el('p', 'case-assignment', assignment)),
+    caseSection('NPCs', npcList),
+    caseSection('Locations', locationList),
+    caseSection('Clues', clueList),
+    caseSection('Mood', moodList),
+    caseSection('Twist', el('p', 'case-callout', twist)),
+    caseSection('Final Confrontation', el('p', 'case-callout', finalConfrontation)),
+  );
 }
 
 function renderSolution(c) {
@@ -53,7 +97,7 @@ function renderSolution(c) {
 
 generateBtn.addEventListener('click', () => {
   currentCase = generateCase();
-  outputEl.textContent = formatCase(currentCase);
+  renderCase(currentCase);
   renderSolution(currentCase);
   solutionEl.open = false;
   resultEl.hidden = false;

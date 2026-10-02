@@ -1,7 +1,7 @@
 import { generateAssignment } from './tables/assignments.js';
 import { generateNpcs, generateNpcMatching, npcMatches, formatNpc } from './tables/npcs.js';
-import { generateLocation, generateLocationMatching, locationMatches, formatLocation } from './tables/locations.js';
-import { generateClue, formatClue } from './tables/clues.js';
+import { generateLocation, generateLocationMatching, locationMatches, formatLocation, sectorDescription } from './tables/locations.js';
+import { generateClue, formatClue, clueTypeDescription } from './tables/clues.js';
 import { createTwist, createFinalConfrontation, createMoodPiece, formatMoodPiece } from './tables/supplementary.js';
 
 // Java: ThreadLocalRandom.nextInt(1, 3 + 1) + 3 -> 1..3, then +3 -> 4..6.
@@ -55,6 +55,36 @@ export function generateCase(assignment = generateAssignment()) {
     moods: Array.from({ length: 3 }, () => createMoodPiece()),
     twist: createTwist(),
     finalConfrontation: createFinalConfrontation(),
+  };
+}
+
+function npcName(npc) {
+  return `${npc.firstName} ${npc.lastName}`;
+}
+
+// Structured, display-ready text for each part of the case — the page
+// renders this as HTML; formatCase is the plain-text version.
+export function describeCase(c) {
+  return {
+    assignment: c.assignment.text,
+    npcs: c.npcs.map((npc) => ({
+      name: npcName(npc),
+      role: `${npc.type} · ${npc.occupation}`,
+      quirk: npc.quirk,
+    })),
+    locations: c.locations.map((loc) => ({
+      name: loc.location,
+      detail: `${loc.area} · Sector ${loc.sector}: ${sectorDescription(loc.sector)}`,
+    })),
+    clues: c.clues.map((clue) => ({
+      label: clueTypeDescription(clue.type),
+      text: clue.type === 'WITNESS'
+        ? `${npcName(clue.witness)}, ${clue.witness.occupation} (${clue.witness.type}). Quirk: ${clue.witness.quirk}`
+        : clue.text,
+    })),
+    moods: c.moods.map(formatMoodPiece),
+    twist: c.twist,
+    finalConfrontation: c.finalConfrontation,
   };
 }
 

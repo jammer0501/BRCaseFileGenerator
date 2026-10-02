@@ -21,7 +21,7 @@ const CLUE_ITEMS = {
   ITEM: ['Gun', 'Clothing', 'Statuette', 'Jewelry', 'Vehicle', 'Data Disc / Memory C/ube'],
 };
 
-function clueTypeDescription(id) {
+export function clueTypeDescription(id) {
   return CLUE_TYPES.find((type) => type.id === id).description;
 }
 

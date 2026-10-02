@@ -84,8 +84,6 @@ every hint can be produced by the tables.
   or the user supplying their own key per-session. Not decided.
 - Per-section reroll of the case itself (just NPCs, just one clue, etc.) — the solution can
   already be re-rolled independently; the case is still all-or-nothing.
-- Structured/card UI for the case itself — the solution panel already renders as structured
-  blocks; the case is still one plain-text `<pre>`.
 - Print/copy-to-clipboard view for handing a case to players.
 - Theme-biased culprit/motive selection (tie into `case.assignment`'s theme).
 

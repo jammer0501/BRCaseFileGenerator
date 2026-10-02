@@ -11,7 +11,7 @@ export const SECTORS = [
   { id: 'BEYOND_DOWNTOWN', description: 'Beyond Downtown' },
 ];
 
-function sectorDescription(id) {
+export function sectorDescription(id) {
   return SECTORS.find((sector) => sector.id === id).description;
 }
 
