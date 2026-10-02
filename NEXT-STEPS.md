@@ -87,33 +87,27 @@ every hint can be produced by the tables.
 - Print/copy-to-clipboard view for handing a case to players.
 - Theme-biased culprit/motive selection (tie into `case.assignment`'s theme).
 
-## Neon Requiem toolkit integration (not scoped yet)
+## Neon Requiem toolkit
 
 Source: `THE_COMPLETE_TEARS_IN_THE_RAIN_TOOLKIT.pdf` — a 100-table d20 cyberpunk/Blade-Runner
 sourcebook ("Neon Requiem"), in 5 parts: City, Synthetic, Hunter, Hunt, Rain. Tables cross-link
 via `→` references and are designed to be rolled standalone.
 
-**IMPORTANT — local-only, do not commit to the public repo.** This repo's `origin` is
-`github.com/jammer0501/BRCaseFileGenerator`, deployed publicly via GitHub Pages. The toolkit is
-third-party (possibly purchased/licensed) content — its table text must not be committed, pushed,
-or otherwise land in the public repo/deploy unless/until licensing is explicitly confirmed clear
-for redistribution. When this work starts: keep the table data in a location excluded from git
-(e.g. add a gitignored path — `js/tables/neonRequiem*.js` or a `local/` directory — before writing
-any table content to disk), or keep the whole effort on a local-only, never-pushed branch. Revisit
-this note before the first commit that touches this content.
+**The standalone toolkit is its own app now**: the "digital sourcebook" roller (all 100 tables,
+cross-reference chaining, quick recipes) lives in a separate, private repo, `NeonRequiemToolkit`
+(locally `C:\dev\repos\NeonRequiemToolkit`). It was split out of this repo's gitignored `local/`
+folder, which has been removed.
 
-Four candidate integrations, increasing in scope — user wants to eventually do all four:
+**Keep the table text out of this repo** — it's public and deployed via GitHub Pages. Don't
+commit, push or deploy any of it from here. `/local/` stays gitignored as a guard.
 
-1. **Case-resolution narration** (smallest, most natural next step) — pair with the relationship
-   layer (`js/relationships.js`): pull from *Crime Scene* (T61), *Traces & Clues* (T62),
-   *The Confrontation* (T67), *Taking Them Down* (T68), *Spared or Destroyed* (T87), *Dying Words*
-   (T88) to turn the culprit/clue-trail data into a narrated beat instead of just structured facts.
-2. **Richer atmosphere/mood** — replace/expand the current 8-entry `MOODS` table
-   (`js/tables/supplementary.js`) with a much larger pool drawn from the City tables (Neon
-   Streets, Crowds & Street Fashion, Sound of the City, Urban Legends, Power & Blackouts).
-3. **Synthetic/NPC depth** — add a "is this NPC secretly synthetic, and what gives them away"
-   layer using the Synthetic-part tables (Synthetic Models, Telltale Flaws, What They Want,
-   Emotional Glitches) — brings in the show's central theme; bigger data-model change than 1 or 2.
-4. **Full standalone toolkit mode** — digitize all 100 tables as their own rollable section,
-   independent of case generation, i.e. a digital version of the sourcebook itself. Biggest scope,
-   most new UI.
+On hold — these would bring table text into this public app:
+
+1. **Case-resolution narration** — pair with the relationship layer (`js/relationships.js`):
+   *Crime Scene* (T61), *Traces & Clues* (T62), *The Confrontation* (T67), *Taking Them Down*
+   (T68), *Spared or Destroyed* (T87), *Dying Words* (T88) to narrate the culprit/clue trail.
+2. **Richer atmosphere/mood** — expand the 8-entry `MOODS` table (`js/tables/supplementary.js`)
+   from the City tables (Neon Streets, Crowds & Street Fashion, Sound of the City, Urban Legends,
+   Power & Blackouts).
+3. **Synthetic/NPC depth** — a "secretly synthetic, and what gives them away" layer from the
+   Synthetic tables (Synthetic Models, Telltale Flaws, What They Want, Emotional Glitches).

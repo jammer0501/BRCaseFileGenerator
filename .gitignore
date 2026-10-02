@@ -10,5 +10,6 @@ out/
 .DS_Store
 Thumbs.db
 
-# Local-only tools (third-party sourcebook content — never commit/push)
+# Neon Requiem table text stays out of this repo; the toolkit lives in its
+# own private repo (NeonRequiemToolkit)
 /local/
