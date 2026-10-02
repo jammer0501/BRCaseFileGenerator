@@ -1,9 +1,12 @@
 // BUMP CACHE_VERSION when shipping content or code changes.
-const CACHE_VERSION = 'v11';
+const CACHE_VERSION = 'v12';
 const SHELL_CACHE   = `br-case-files-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `br-case-files-runtime-${CACHE_VERSION}`;
 
+// './' is what the home-screen icon opens; caching only 'index.html' left
+// the app unable to start offline.
 const SHELL_URLS = [
+  './',
   'index.html',
   'app.js',
   'js/generator.js',
@@ -51,6 +54,13 @@ async function cacheFirst(request) {
   return response;
 }
 
+// Any page navigation (e.g. "./" from the home-screen icon) gets the cached
+// app shell, so the installed app opens offline.
+async function appShell(request) {
+  const cached = await caches.match('./');
+  return cached ?? fetch(request);
+}
+
 async function googleFontsFirst(request) {
   const cache = await caches.open(RUNTIME_CACHE);
   const cached = await cache.match(request);
@@ -70,7 +80,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  if (url.origin === self.location.origin) {
-    event.respondWith(cacheFirst(event.request));
+  if (url.origin !== self.location.origin) return;
+
+  if (event.request.mode === 'navigate') {
+    event.respondWith(appShell(event.request));
+    return;
   }
+
+  event.respondWith(cacheFirst(event.request));
 });
