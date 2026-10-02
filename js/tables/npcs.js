@@ -68,6 +68,23 @@ export function createNpc(type) {
   };
 }
 
+// A hint is { types?, occupations? }: an NPC matches if its type or its
+// occupation is listed. An empty hint matches anyone.
+export function npcMatches(npc, hint) {
+  const { types, occupations } = hint;
+  if (!types && !occupations) return true;
+  return (types ?? []).includes(npc.type) || (occupations ?? []).includes(npc.occupation);
+}
+
+export function generateNpcMatching(hint) {
+  const candidates = NPC_TYPES.flatMap((type) =>
+    NPC_DATA[type].occupations.map((occupation) => ({ type, occupation })))
+    .filter((candidate) => npcMatches(candidate, hint));
+  if (candidates.length === 0) throw new Error(`No NPC matches hint ${JSON.stringify(hint)}`);
+  const { type, occupation } = randomItem(candidates);
+  return { ...createNpc(type), occupation };
+}
+
 export function generateNpc() {
   return createNpc(getRandomNpcType());
 }

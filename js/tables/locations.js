@@ -139,6 +139,27 @@ export function generateLocation() {
   return SECTOR_CREATORS[sector]();
 }
 
+// A hint is { sector, area?, location? }, or an array of them where any one
+// will do.
+export function locationMatches(location, hint) {
+  if (Array.isArray(hint)) return hint.some((h) => locationMatches(location, h));
+  return location.sector === hint.sector
+    && (hint.area === undefined || location.area === hint.area)
+    && (hint.location === undefined || location.location === hint.location);
+}
+
+// Rolls within the hinted sector until the result matches, so the area and
+// location weights still apply. Throws if the hint names something the
+// tables can't produce.
+export function generateLocationMatching(hint) {
+  const target = Array.isArray(hint) ? randomItem(hint) : hint;
+  for (let i = 0; i < 1000; i++) {
+    const location = SECTOR_CREATORS[target.sector]();
+    if (locationMatches(location, target)) return location;
+  }
+  throw new Error(`No location matches hint ${JSON.stringify(target)}`);
+}
+
 export function formatLocation(location) {
   return `${location.location}, ${location.area}, Sector ${location.sector}: ${sectorDescription(location.sector)}`;
 }

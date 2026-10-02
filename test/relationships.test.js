@@ -1,7 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { generateCase } from '../js/generator.js';
-import { generateRelationships, formatRelationships } from '../js/relationships.js';
+import { generateRelationships, describeRelationships, formatRelationships } from '../js/relationships.js';
+import { ALL_ASSIGNMENTS } from '../js/tables/assignments.js';
+import { locationMatches } from '../js/tables/locations.js';
+import { npcMatches } from '../js/tables/npcs.js';
 
 test('culprit is a valid case NPC index', () => {
   for (let i = 0; i < 30; i++) {
@@ -112,4 +115,54 @@ test('formatRelationships includes solution and clue trail headers', () => {
   assert.ok(text.includes('Crime Scene:'));
   assert.ok(text.includes("Culprit's Haunt:"));
   assert.ok(text.includes('Confrontation Site:'));
+});
+
+test('the Crime Scene is the one the assignment names', () => {
+  for (const assignment of ALL_ASSIGNMENTS.filter((a) => a.crimeScene)) {
+    for (let i = 0; i < 20; i++) {
+      const c = generateCase(assignment);
+      const { locationRoles } = generateRelationships(c);
+      const crimeScene = locationRoles.find((r) => r.role === 'CRIME_SCENE').locationIndex;
+      assert.ok(locationMatches(c.locations[crimeScene], assignment.crimeScene), assignment.text);
+    }
+  }
+});
+
+test('the culprit fits the kind of person the assignment describes', () => {
+  for (const assignment of ALL_ASSIGNMENTS.filter((a) => a.culprit)) {
+    for (let i = 0; i < 20; i++) {
+      const c = generateCase(assignment);
+      const { culprit } = generateRelationships(c);
+      assert.ok(npcMatches(c.npcs[culprit.npcIndex], assignment.culprit), assignment.text);
+    }
+  }
+});
+
+test('red-herring assignments settle whether the obvious suspect did it', () => {
+  for (const assignment of ALL_ASSIGNMENTS.filter((a) => a.redHerring)) {
+    const { suspect, alternative } = assignment.redHerring;
+    const outcomes = new Set();
+    for (let i = 0; i < 60; i++) {
+      const c = generateCase(assignment);
+      const rel = generateRelationships(c);
+      const { culprit } = rel;
+      assert.ok(npcMatches(c.npcs[culprit.suspect.npcIndex], suspect), assignment.text);
+      if (culprit.suspect.framed) {
+        assert.notEqual(culprit.npcIndex, culprit.suspect.npcIndex);
+        assert.ok(npcMatches(c.npcs[culprit.npcIndex], alternative), assignment.text);
+      } else {
+        assert.equal(culprit.npcIndex, culprit.suspect.npcIndex);
+      }
+      assert.ok(describeRelationships(c, rel).culprit.verdict);
+      outcomes.add(culprit.suspect.framed);
+    }
+    assert.equal(outcomes.size, 2, `${assignment.text}: expected both outcomes`);
+  }
+});
+
+test('assignments without a red herring have no verdict', () => {
+  for (const assignment of ALL_ASSIGNMENTS.filter((a) => !a.redHerring)) {
+    const c = generateCase(assignment);
+    assert.equal(describeRelationships(c, generateRelationships(c)).culprit.verdict, undefined);
+  }
 });

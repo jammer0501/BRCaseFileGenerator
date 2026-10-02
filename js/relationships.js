@@ -1,6 +1,7 @@
 import { randomItem } from './random.js';
-import { formatLocation } from './tables/locations.js';
+import { formatLocation, locationMatches } from './tables/locations.js';
 import { formatClue } from './tables/clues.js';
+import { npcMatches } from './tables/npcs.js';
 
 const MOTIVES = [
   'Revenge for a past wrong',
@@ -33,8 +34,15 @@ function shuffledIndices(count) {
   return indices;
 }
 
-function generateLocationRoles(locationCount) {
-  const order = shuffledIndices(locationCount);
+// If the assignment names a crime scene, a location matching it takes that
+// role; the rest are shuffled into the remaining roles.
+function generateLocationRoles(c) {
+  let order = shuffledIndices(c.locations.length);
+  const hint = c.assignment.crimeScene;
+  if (hint) {
+    const crimeScene = randomItem(order.filter((i) => locationMatches(c.locations[i], hint)));
+    order = [crimeScene, ...order.filter((i) => i !== crimeScene)];
+  }
   return LOCATION_ROLES.map((role, i) => ({ locationIndex: order[i], role }));
 }
 
@@ -103,13 +111,33 @@ function generateClueLinks(c, locationRoles) {
   });
 }
 
-export function generateRelationships(c) {
-  const culprit = {
-    npcIndex: randomIndex(c.npcs.length),
-    motive: randomItem(MOTIVES),
-  };
+function matchingNpcIndices(c, hint) {
+  return c.npcs.map((_, i) => i).filter((i) => npcMatches(c.npcs[i], hint));
+}
 
-  const locationRoles = generateLocationRoles(c.locations.length);
+// Red-herring assignments name an obvious suspect; usually they're a
+// red herring and the alternative party did it.
+const RED_HERRING_TWIST_CHANCE = 2 / 3;
+
+function generateCulpritIndex(c) {
+  const { culprit, redHerring } = c.assignment;
+  if (redHerring) {
+    const pairs = matchingNpcIndices(c, redHerring.suspect).flatMap((suspect) =>
+      matchingNpcIndices(c, redHerring.alternative)
+        .filter((alternative) => alternative !== suspect)
+        .map((alternative) => ({ suspect, alternative })));
+    const { suspect, alternative } = randomItem(pairs);
+    const framed = Math.random() < RED_HERRING_TWIST_CHANCE;
+    return { npcIndex: framed ? alternative : suspect, suspect: { npcIndex: suspect, framed } };
+  }
+  if (culprit) return { npcIndex: randomItem(matchingNpcIndices(c, culprit)) };
+  return { npcIndex: randomIndex(c.npcs.length) };
+}
+
+export function generateRelationships(c) {
+  const culprit = { ...generateCulpritIndex(c), motive: randomItem(MOTIVES) };
+
+  const locationRoles = generateLocationRoles(c);
   const clueLinks = generateClueLinks(c, locationRoles);
 
   return { culprit, locationRoles, clueLinks };
@@ -126,9 +154,20 @@ function formatFoundAt(clue, foundAt, c, culpritNpcIndex, locationRoles) {
     const verb = clue.type === 'WITNESS' ? 'encountered at' : 'found at';
     return `${verb} the ${roleLabel}`;
   }
-  const npc = c.npcs[foundAt.npcIndex];
   const suffix = foundAt.npcIndex === culpritNpcIndex ? ' (the culprit)' : '';
-  return `found on ${npc.firstName} ${npc.lastName}${suffix}`;
+  return `found on ${npcName(c.npcs[foundAt.npcIndex])}${suffix}`;
+}
+
+function npcName(npc) {
+  return `${npc.firstName} ${npc.lastName}`;
+}
+
+function formatVerdict(c, culprit) {
+  const { suspect, alternative } = c.assignment.redHerring;
+  if (!culprit.suspect.framed) return `No red herring: it really was ${suspect.label}.`;
+  const suspectNpc = c.npcs[culprit.suspect.npcIndex];
+  return `Red herring: the evidence points to ${suspect.label} (${npcName(suspectNpc)}), `
+    + `but the real culprit is ${alternative.label}.`;
 }
 
 function formatPointsTo(pointsTo, locationRoles) {
@@ -144,9 +183,10 @@ export function describeRelationships(c, relationships) {
 
   return {
     culprit: {
-      name: `${culpritNpc.firstName} ${culpritNpc.lastName}`,
+      name: npcName(culpritNpc),
       detail: `${culpritNpc.type}: ${culpritNpc.occupation}`,
       motive: culprit.motive,
+      verdict: culprit.suspect ? formatVerdict(c, culprit) : undefined,
     },
     locations: LOCATION_ROLES.map((role) => ({
       label: LOCATION_ROLE_LABELS[role],
@@ -169,6 +209,7 @@ export function formatRelationships(c, relationships) {
 
   lines.push('CASE SOLUTION:');
   lines.push(`Culprit: ${culprit.name} (${culprit.detail}) — Motive: ${culprit.motive}`);
+  if (culprit.verdict) lines.push(culprit.verdict);
   for (const { label, text } of locations) lines.push(`${label}: ${text}`);
 
   lines.push('');

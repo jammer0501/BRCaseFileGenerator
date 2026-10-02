@@ -27,6 +27,7 @@ function renderSolution(c) {
     el('p', 'solution-detail', culprit.detail),
     el('p', 'solution-detail', `Motive: ${culprit.motive}`),
   );
+  if (culprit.verdict) culpritBlock.append(el('p', 'solution-detail', culprit.verdict));
 
   const locationsBlock = el('div', 'solution-block');
   const locationList = el('dl', 'solution-locations');

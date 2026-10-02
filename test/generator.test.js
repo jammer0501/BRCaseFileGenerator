@@ -5,7 +5,7 @@ import { TWISTS, CONFRONTATIONS } from '../js/tables/supplementary.js';
 
 test('generateCase returns a fully-populated case', () => {
   const c = generateCase();
-  assert.equal(typeof c.assignment, 'string');
+  assert.equal(typeof c.assignment.text, 'string');
   assert.ok(c.npcs.length >= 4 && c.npcs.length <= 6, `expected 4-6 NPCs, got ${c.npcs.length}`);
   assert.equal(c.locations.length, 3);
   assert.equal(c.clues.length, 5);

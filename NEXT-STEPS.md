@@ -60,7 +60,20 @@ in the case itself. Full causal/airtight mystery generation was ruled out as out
      something leading to the Haunt (found at the Crime Scene), something leading to the
      Confrontation Site (found earlier in the chain), and something implicating the culprit.
 
-Tests in `test/relationships.test.js` cover all of the above.
+4. **Assignment hints** — assignments in `js/tables/assignments.js` are objects (`{ text, crimeScene?,
+   culprit?, redHerring? }`) so the case and solution can't contradict the assignment text:
+   - `crimeScene`: `generateCase()` makes sure one location matches it; the solution always
+     uses that location as the Crime Scene. Places not in the tables map to the nearest one
+     (five-star restaurant → Razdora Eatery, Sea Wall construction site → Sea Wall Docks).
+   - `culprit`: `generateCase()` makes sure at least one NPC matches it (by type or occupation);
+     the solution only picks a culprit from the matching NPCs.
+   - `redHerring`: the assignment names an obvious suspect. The solution names the suspect NPC
+     and states a verdict: framed (2 in 3, the `alternative` party did it) or genuinely guilty.
+   - Replicant status isn't tracked; if the assignment says the culprit is a Replicant, the
+     GM treats the chosen NPC as one.
+
+Tests in `test/relationships.test.js` cover all of the above; `test/assignments.test.js` checks
+every hint can be produced by the tables.
 
 ## Backlog / later ideas (not scoped yet)
 
