@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createTwist, createFinalConfrontation, createMoodPiece, formatMoodPiece, TWISTS, CONFRONTATIONS } from '../js/tables/supplementary.js';
+import { createTwist, createFinalConfrontation, createMoodPiece, createMoodPieces, formatMoodPiece, TWISTS, CONFRONTATIONS } from '../js/tables/supplementary.js';
 
 test('createTwist and createFinalConfrontation draw from disjoint tables', () => {
   const overlap = TWISTS.filter((t) => CONFRONTATIONS.includes(t));
@@ -22,4 +22,11 @@ test('createMoodPiece returns a fully-populated mood', () => {
   assert.ok(mood.weather.length > 0);
   assert.ok(mood.screen.length > 0);
   assert.ok(mood.passing.length > 0);
+});
+
+test('createMoodPieces never repeats a mood', () => {
+  for (let i = 0; i < 200; i++) {
+    const moods = createMoodPieces(3).map(formatMoodPiece);
+    assert.equal(new Set(moods).size, 3);
+  }
 });

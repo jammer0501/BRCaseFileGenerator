@@ -1,8 +1,8 @@
 import { generateAssignment } from './tables/assignments.js';
-import { generateNpcs, generateNpcMatching, npcMatches, formatNpc } from './tables/npcs.js';
+import { generateNpcs, generateNpcMatching, npcMatches, withDistinctNames, formatNpc } from './tables/npcs.js';
 import { generateLocation, generateLocationMatching, locationMatches, formatLocation, sectorDescription } from './tables/locations.js';
-import { generateClue, formatClue, clueTypeDescription } from './tables/clues.js';
-import { createTwist, createFinalConfrontation, createMoodPiece, formatMoodPiece } from './tables/supplementary.js';
+import { generateClues, formatClue, clueTypeDescription } from './tables/clues.js';
+import { createTwist, createFinalConfrontation, createMoodPieces, formatMoodPiece } from './tables/supplementary.js';
 
 // Java: ThreadLocalRandom.nextInt(1, 3 + 1) + 3 -> 1..3, then +3 -> 4..6.
 function randomNpcCount() {
@@ -47,12 +47,13 @@ function generateLocations(assignment) {
 }
 
 export function generateCase(assignment = generateAssignment()) {
+  const npcs = withDistinctNames(satisfyNpcHints(generateNpcs(randomNpcCount()), npcHintsFor(assignment)));
   return {
     assignment,
-    npcs: satisfyNpcHints(generateNpcs(randomNpcCount()), npcHintsFor(assignment)),
+    npcs,
     locations: generateLocations(assignment),
-    clues: Array.from({ length: 5 }, () => generateClue()),
-    moods: Array.from({ length: 3 }, () => createMoodPiece()),
+    clues: generateClues(5, npcs),
+    moods: createMoodPieces(3),
     twist: createTwist(),
     finalConfrontation: createFinalConfrontation(),
   };

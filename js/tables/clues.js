@@ -1,5 +1,5 @@
 import { randomItem, pickWeighted } from '../random.js';
-import { generateNpc, formatNpc } from './npcs.js';
+import { generateNpc, withDistinctNames, formatNpc } from './npcs.js';
 
 // Weight is relative likelihood, not a percentage; omit it for weight 1.
 export const CLUE_TYPES = [
@@ -31,6 +31,28 @@ export function generateClue() {
     return { type, witness: generateNpc() };
   }
   return { type, text: randomItem(CLUE_ITEMS[type]) };
+}
+
+// Witnesses are told apart by name (see generateClues); any other clue is
+// a repeat if its type and text match.
+function isRepeat(clue, clues) {
+  return clue.type !== 'WITNESS'
+    && clues.some((other) => other.type === clue.type && other.text === clue.text);
+}
+
+// `count` clues with no repeats. Witnesses are renamed so they don't share
+// a name with each other or with `people` (the case's NPCs).
+export function generateClues(count, people = []) {
+  const clues = [];
+  while (clues.length < count) {
+    const clue = generateClue();
+    if (!isRepeat(clue, clues)) clues.push(clue);
+  }
+
+  const witnessClues = clues.filter((clue) => clue.type === 'WITNESS');
+  const named = withDistinctNames([...people, ...witnessClues.map((clue) => clue.witness)]);
+  witnessClues.forEach((clue, i) => { clue.witness = named[people.length + i]; });
+  return clues;
 }
 
 export function formatClue(clue) {

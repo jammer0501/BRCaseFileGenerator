@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { generateClue, formatClue } from '../js/tables/clues.js';
+import { generateClue, generateClues, formatClue } from '../js/tables/clues.js';
 
 test('witness clues carry an NPC and format correctly', () => {
   let sawWitness = false;
@@ -22,5 +22,12 @@ test('non-witness clues carry text and format correctly', () => {
       assert.ok(clue.text.length > 0);
       assert.ok(formatClue(clue).length > 0);
     }
+  }
+});
+
+test('generateClues never repeats a clue', () => {
+  for (let i = 0; i < 200; i++) {
+    const clues = generateClues(5).filter((clue) => clue.type !== 'WITNESS').map(formatClue);
+    assert.equal(new Set(clues).size, clues.length);
   }
 });

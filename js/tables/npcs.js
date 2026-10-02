@@ -85,6 +85,41 @@ export function generateNpcMatching(hint) {
   return { ...createNpc(type), occupation };
 }
 
+function fullName(npc) {
+  return `${npc.firstName} ${npc.lastName}`;
+}
+
+// Keeps `current` unless someone already has it, then picks an unused
+// alternative from `pool` if there is one.
+function distinctFrom(pool, used, current) {
+  if (!used.has(current)) return current;
+  const free = pool.filter((name) => !used.has(name));
+  return free.length > 0 ? randomItem(free) : current;
+}
+
+// Renames NPCs so no two share a first name or a surname where the type's
+// name pools allow it (6 of each per type), and never share a full name.
+// Type, occupation and quirk are kept.
+export function withDistinctNames(npcs) {
+  const named = [];
+  for (const npc of npcs) {
+    const { firstNames, lastNames } = NPC_DATA[npc.type];
+    let renamed = {
+      ...npc,
+      firstName: distinctFrom(firstNames, new Set(named.map((n) => n.firstName)), npc.firstName),
+      lastName: distinctFrom(lastNames, new Set(named.map((n) => n.lastName)), npc.lastName),
+    };
+    const usedFull = new Set(named.map(fullName));
+    if (usedFull.has(fullName(renamed))) {
+      const free = firstNames.flatMap((firstName) => lastNames.map((lastName) => ({ firstName, lastName })))
+        .filter((name) => !usedFull.has(fullName(name)));
+      renamed = { ...renamed, ...randomItem(free) };
+    }
+    named.push(renamed);
+  }
+  return named;
+}
+
 export function generateNpc() {
   return createNpc(getRandomNpcType());
 }

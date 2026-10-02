@@ -31,3 +31,12 @@ test('formatCase includes every section header', () => {
     assert.ok(text.includes(header), `missing header ${header}`);
   }
 });
+
+test('no two people in a case share a name, witnesses included', () => {
+  for (let i = 0; i < 200; i++) {
+    const c = generateCase();
+    const people = [...c.npcs, ...c.clues.filter((clue) => clue.type === 'WITNESS').map((clue) => clue.witness)];
+    const names = people.map((p) => `${p.firstName} ${p.lastName}`);
+    assert.equal(new Set(names).size, names.length, names.join(', '));
+  }
+});
